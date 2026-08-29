@@ -13,14 +13,14 @@ Scanner Output → Classify Artefacts → Generate CBOM → Calculate Risk → R
 - `sample_output/` — Example scanner and CBOM output for reference
 
 ## How to run
-\`\`\`bash
+​```bash
 cd scanner
 pip install javalang
 python scanner.py ../sample_code scanner_output.json
 
 cd ../cbom
 python cbom_generator.py ../scanner/scanner_output.json cbom_output.json
-\`\`\`
+​```
 
 ## Output contract
 See `sample_output/cbom_output.json` for the exact structure Part 3
