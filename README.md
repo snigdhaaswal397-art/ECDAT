@@ -20,15 +20,13 @@ Scanner Output → Classify Artefacts → Generate CBOM → Calculate Risk → R
 - Recommendation Database: done (RSA→ML-KEM, ECC→ML-DSA, SHA-1→SHA-256, DES→AES-256, plus more)
 
 ## How to run
-​```bash
-cd scanner
-pip install javalang
-python scanner.py ../sample_code scanner_output.json
 
-cd ../cbom
-python cbom_generator.py ../scanner/scanner_output.json cbom_output.json
-​```
+    cd scanner
+    pip install javalang
+    python scanner.py ../sample_code scanner_output.json
+
+    cd ../cbom
+    python cbom_generator.py ../scanner/scanner_output.json cbom_output.json
 
 ## Output contract
-See `sample_output/cbom_output.json` for the exact structure Part 3
-(risk engine) and Part 4 (MongoDB) should consume.
+See `sample_output/cbom_output.json` for the exact structure Part 3 (risk engine) and Part 4 (MongoDB) should consume.
