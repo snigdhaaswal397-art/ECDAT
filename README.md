@@ -23,7 +23,7 @@ Scanner Output → Classify Artefacts → Generate CBOM → Calculate Risk → R
 
     cd scanner
     pip install javalang
-    python scanner.py ../sample_code scanner_output.json
+    python -m scanner.scanner ../samples scanner_output.json
 
     cd ../cbom
     python cbom_generator.py ../scanner/scanner_output.json cbom_output.json
