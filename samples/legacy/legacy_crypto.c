@@ -3,19 +3,19 @@
 #include <openssl/md5.h>
 #include <openssl/evp.h>
 
-RSA *generate_legacy_key() {
+RSA *make_key(void) {
     RSA *rsa = RSA_generate_key(1024, RSA_F4, NULL, NULL);
     return rsa;
 }
 
-void hash_data(const unsigned char *data, size_t len, unsigned char *out) {
+void hash_it(const unsigned char *data, size_t len, unsigned char *out) {
     MD5(data, len, out);
 }
 
-void sign_with_sha1(EVP_MD_CTX *ctx) {
+void hash_sha1(EVP_MD_CTX *ctx) {
     EVP_DigestInit(ctx, EVP_sha1());
 }
 
-void encrypt_with_des(DES_key_schedule *ks, const_DES_cblock *input, DES_cblock *output) {
+void legacy_encrypt(const unsigned char *input, unsigned char *output, void *ks) {
     DES_ecb_encrypt(input, output, ks, DES_ENCRYPT);
 }

@@ -1,33 +1,33 @@
 import javax.crypto.Cipher;
-import java.security.MessageDigest;
 import java.security.KeyPairGenerator;
+import java.security.MessageDigest;
 import java.security.Signature;
 
 public class LegacyAuthService {
 
-    public byte[] hashPassword(String password) throws Exception {
+    public void hashMD5(String data) throws Exception {
         MessageDigest md = MessageDigest.getInstance("MD5");
-        return md.digest(password.getBytes());
+        md.update(data.getBytes());
     }
 
-    public byte[] checksumData(byte[] data) throws Exception {
+    public void hashSHA1(String data) throws Exception {
         MessageDigest sha1 = MessageDigest.getInstance("SHA-1");
-        return sha1.digest(data);
+        sha1.update(data.getBytes());
     }
 
-    public KeyPairGenerator generateRsaKeys() throws Exception {
+    public KeyPairGenerator generateRSAKey() throws Exception {
         KeyPairGenerator gen = KeyPairGenerator.getInstance("RSA");
         gen.initialize(1024);
         return gen;
     }
 
-    public Cipher encryptPayload() throws Exception {
+    public byte[] encryptAES(byte[] key, byte[] data) throws Exception {
         Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
-        return cipher;
+        return cipher.doFinal(data);
     }
 
-    public Signature signData() throws Exception {
+    public void signECDSA() throws Exception {
         Signature sig = Signature.getInstance("SHA256withECDSA");
-        return sig;
+        sig.initSign(null);
     }
 }
