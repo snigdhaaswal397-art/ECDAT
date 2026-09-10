@@ -1,0 +1,10 @@
+FROM nginx:1.25
+
+ENV TLS_VERSION=TLSv1.3
+ENV SSL_CERT=/etc/ssl/server.crt
+ENV SSL_KEY=/etc/ssl/server.key
+
+COPY server.crt /etc/ssl/
+COPY server.key /etc/ssl/private/
+
+# TODO: migrate RSA to PQC eventually

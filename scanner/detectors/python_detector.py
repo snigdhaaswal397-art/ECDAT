@@ -61,7 +61,23 @@ CALL_SIGNATURES = {
     "hashlib.sha512":             ("SHA-512", "hash", "hashlib"),
     "hashes.SHA256":              ("SHA-256", "hash", "cryptography"),
     "hashes.SHA1":                ("SHA-1", "hash", "cryptography"),
-    "ec.SECP256R1":               ("ECC-P256", "algorithm", "cryptography"),
+}
+
+# EC curve constructor name (as it appears in a call like ec.SECP256R1())
+# -> canonical curve name. Used to enrich an ec.generate_private_key(...)
+# finding with a `curve` field (spec section 5: "prefer algorithm=ECC,
+# curve=P-256 rather than inventing an unrelated 'ECC-P256' algorithm").
+# NOTE: this used to be its own CALL_SIGNATURES entry ("ec.SECP256R1" ->
+# "ECC-P256"), which meant a single line like
+#     ec.generate_private_key(ec.SECP256R1(), default_backend())
+# produced TWO separate findings for what is really one crypto operation.
+# It is intentionally not in CALL_SIGNATURES anymore.
+EC_CURVE_NAMES = {
+    "SECP256R1": "P-256",
+    "SECP384R1": "P-384",
+    "SECP521R1": "P-521",
+    "SECP224R1": "P-224",
+    "SECP256K1": "secp256k1",
 }
 
 # Import statements that signal "this file uses crypto" even before we see
@@ -117,6 +133,24 @@ class CryptoASTVisitor(ast.NodeVisitor):
                     return kw.value.value
         return None
 
+    def _extract_curve(self, node: ast.Call) -> Optional[str]:
+        """
+        For ec.generate_private_key(ec.SECP256R1(), ...), look at the first
+        positional argument: if it's itself a call to a known curve
+        constructor, return the canonical curve name. Returns None for
+        anything else (e.g. a variable reference) rather than guessing.
+        """
+        if not node.args:
+            return None
+        first_arg = node.args[0]
+        if isinstance(first_arg, ast.Call):
+            name = self._call_name(first_arg)
+            if name:
+                short_name = name.split(".")[-1]
+                if short_name in EC_CURVE_NAMES:
+                    return EC_CURVE_NAMES[short_name]
+        return None
+
     def visit_Import(self, node: ast.Import):
         for alias in node.names:
             for sig, lib in IMPORT_SIGNATURES.items():
@@ -151,11 +185,24 @@ class CryptoASTVisitor(ast.NodeVisitor):
                 ))
         self.generic_visit(node)
 
+    def _extract_mode(self, node: ast.Call) -> Optional[str]:
+        """Extract cipher mode (GCM, CBC, EAX, ECB, CTR, etc.) if explicitly specified."""
+        for arg in list(node.args) + [kw.value for kw in node.keywords]:
+            if isinstance(arg, ast.Attribute) and arg.attr.startswith("MODE_"):
+                return arg.attr[5:]
+            elif isinstance(arg, ast.Constant) and isinstance(arg.value, str):
+                val = arg.value.upper()
+                if val in ("GCM", "CBC", "EAX", "ECB", "CTR", "CFB", "OFB"):
+                    return val
+        return None
+
     def visit_Call(self, node: ast.Call):
         call_name = self._call_name(node)
         if call_name in CALL_SIGNATURES:
             algorithm, artifact_type, library = CALL_SIGNATURES[call_name]
             key_size = self._extract_key_size(node)
+            curve = self._extract_curve(node) if call_name == "ec.generate_private_key" else None
+            mode = self._extract_mode(node) if artifact_type == "algorithm" else None
             self.artifacts.append(Artifact(
                 artifact_type=artifact_type,
                 algorithm=algorithm,
@@ -166,6 +213,8 @@ class CryptoASTVisitor(ast.NodeVisitor):
                 code_snippet=self._snippet(node.lineno),
                 detection_method="ast_call",
                 confidence=CONFIDENCE_AST_CALL,
+                curve=curve,
+                mode=mode,
             ))
         self.generic_visit(node)
 

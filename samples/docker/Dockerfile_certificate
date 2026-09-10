@@ -1,0 +1,11 @@
+FROM alpine:3.19
+
+RUN apk add --no-cache openssl
+
+RUN openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -days 365 -nodes
+
+COPY ca.pem /etc/ssl/certs/
+COPY cert.pem /etc/ssl/certs/
+ADD key.pem /etc/ssl/private/
+
+ARG CERT_FILE=/etc/ssl/certs/cert.pem
