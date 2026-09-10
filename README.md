@@ -18,6 +18,7 @@ Scanner Output → Classify Artefacts → Generate CBOM → Calculate Risk → R
 - Duplicate Removal: done, preserves full provenance (every file/line an artifact was found at)
 - Pattern Recognition: done, includes cross-file and cross-language detection
 - Recommendation Database: done (RSA→ML-KEM, ECC→ML-DSA, SHA-1→SHA-256, DES→AES-256, plus more)
+- Fix-it Suggestions: added — guided before/after code examples for detected weak algorithms (currently covers RSA and MD5 in Python, more languages/algorithms coming)
 
 ## How to run
 
@@ -26,7 +27,7 @@ Scanner Output → Classify Artefacts → Generate CBOM → Calculate Risk → R
     python -m scanner.scanner ../samples scanner_output.json
 
     cd ../cbom
-    python cbom_generator.py ../scanner/scanner_output.json cbom_output.json
+    python cbom_generator.py ../scanner_output.json cbom_output.json
 
 ## Output contract
 See `sample_output/cbom_output.json` for the exact structure Part 3 (risk engine) and Part 4 (MongoDB) should consume.
