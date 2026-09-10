@@ -5,9 +5,12 @@ Uses javalang (a real Java AST parser) to detect crypto artifacts in .java
 files. Same output contract as scanner.py's Python detector.
 """
 
+
 import uuid
-from typing import Optional
+
 import javalang
+import javalang.tree
+from typing import cast
 
 # Maps the string argument passed to getInstance(...) to (algorithm, artifact_type)
 JAVA_ALGORITHM_MAP = {
@@ -41,8 +44,8 @@ LIBRARY_MAP = {
 }
 
 
-def _artifact(algorithm, artifact_type, library, key_size, file_path, line, snippet, method, confidence):
-    return {
+def _artifact(algorithm, artifact_type, library, key_size, file_path, line, snippet, method, confidence, mode=None):
+    res = {
         "artifact_id": str(uuid.uuid4())[:8],
         "artifact_type": artifact_type,
         "algorithm": algorithm,
@@ -54,6 +57,9 @@ def _artifact(algorithm, artifact_type, library, key_size, file_path, line, snip
         "detection_method": method,
         "confidence": confidence,
     }
+    if mode:
+        res["mode"] = mode
+    return res
 
 
 def scan_java_file(file_path: str) -> list[dict]:
@@ -65,43 +71,71 @@ def scan_java_file(file_path: str) -> list[dict]:
         tree = javalang.parse.parse(source)
     except (javalang.parser.JavaSyntaxError, Exception):
         return []
+    
+    
 
     artifacts = []
     pending_key_size = {}  # tracks generator.initialize(1024) calls by rough proximity
 
-    for path, node in tree.filter(javalang.tree.MethodInvocation):
-        if node.member == "getInstance" and node.qualifier in JAVA_FACTORY_CLASSES:
-            if node.arguments:
-                arg = node.arguments[0]
+    for path, raw_node in tree.filter(javalang.tree.MethodInvocation):
+        node = cast(javalang.tree.MethodInvocation, raw_node)
+        member = getattr(node, "member", None)
+        qualifier = getattr(node, "qualifier", None)
+        arguments = getattr(node, "arguments", [])
+
+
+        if member == "getInstance" and qualifier in JAVA_FACTORY_CLASSES:
+            arguments = getattr(node, "arguments", [])
+
+            if arguments:
+                arg = arguments[0]
                 alg_string = None
                 if isinstance(arg, javalang.tree.Literal):
-                    alg_string = arg.value.strip('"')
+                    literal_value = getattr(arg, "value", None)
 
-                if alg_string and alg_string in JAVA_ALGORITHM_MAP:
-                    algorithm, artifact_type = JAVA_ALGORITHM_MAP[alg_string]
-                    line = node.position.line if node.position else 0
-                    snippet = source_lines[line - 1].strip() if 0 < line <= len(source_lines) else ""
-                    artifacts.append(_artifact(
-                        algorithm=algorithm,
-                        artifact_type=artifact_type,
-                        library=LIBRARY_MAP.get(node.qualifier, "java.security"),
-                        key_size=None,  # resolved below if an initialize(N) call is nearby
-                        file_path=file_path,
-                        line=line,
-                        snippet=snippet,
-                        method="ast_call",
-                        confidence=0.95,
-                    ))
+                    if literal_value is not None:
+                        alg_string = str(literal_value).strip('"')
+
+                if alg_string:
+                    base_alg = alg_string.split('/')[0] if '/' in alg_string else alg_string
+                    extracted_mode = None
+                    if '/' in alg_string:
+                        parts = alg_string.split('/')
+                        if len(parts) > 1 and parts[1].upper() in ("GCM", "CBC", "ECB", "CTR", "CFB", "OFB"):
+                            extracted_mode = parts[1].upper()
+
+                    lookup_key = alg_string if alg_string in JAVA_ALGORITHM_MAP else base_alg
+                    if lookup_key in JAVA_ALGORITHM_MAP:
+                        algorithm, artifact_type = JAVA_ALGORITHM_MAP[lookup_key]
+                        line = node.position.line if node.position else 0
+                        snippet = source_lines[line - 1].strip() if 0 < line <= len(source_lines) else ""
+                        artifacts.append(_artifact(
+                            algorithm=algorithm,
+                            artifact_type=artifact_type,
+                            library=LIBRARY_MAP.get(qualifier, "java.security"),
+                            key_size=None,  # resolved below if an initialize(N) call is nearby
+                            file_path=file_path,
+                            line=line,
+                            snippet=snippet,
+                            method="ast_call",
+                            confidence=0.95,
+                            mode=extracted_mode,
+                        ))
 
         # Look for keyGen.initialize(1024) style calls to recover key size
-        if node.member == "initialize" and node.arguments:
-            arg = node.arguments[0]
+        if member == "initialize" and arguments:
+            arg = arguments[0]
+
             if isinstance(arg, javalang.tree.Literal):
+                literal_value = getattr(arg, "value", None)
+                position = getattr(node, "position", None)
+
                 try:
-                    size = int(arg.value)
-                    line = node.position.line if node.position else 0
-                    pending_key_size[line] = size
-                except ValueError:
+                    if literal_value is not None:
+                        size = int(literal_value)
+                        line = position.line if position else 0
+                        pending_key_size[line] = size
+                except (ValueError, TypeError):
                     pass
 
     # Attach key sizes to the nearest preceding getInstance detection in the same method
@@ -112,17 +146,18 @@ def scan_java_file(file_path: str) -> list[dict]:
 
     # Also catch import statements as lower-confidence supporting signals
     for path, node in tree.filter(javalang.tree.Import):
-        if node.path.startswith("javax.crypto") or node.path.startswith("java.security"):
+        path_value = getattr(node, "path", "")
+        if path_value.startswith("javax.crypto") or path_value.startswith("java.security"):
             artifacts.append(_artifact(
-                algorithm="UNSPECIFIED",
-                artifact_type="import_signal",
-                library=node.path,
-                key_size=None,
-                file_path=file_path,
-                line=0,
-                snippet=f"import {node.path};",
-                method="ast_import",
-                confidence=0.3,
-            ))
+            algorithm="UNSPECIFIED",
+            artifact_type="import_signal",
+            library=path_value,
+            key_size=None,
+            file_path=file_path,
+            line=0,
+            snippet=f"import {path_value};",
+            method="ast_import",
+            confidence=0.3,
+        ))
 
     return artifacts

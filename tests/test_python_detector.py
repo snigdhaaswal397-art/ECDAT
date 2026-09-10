@@ -18,7 +18,7 @@ import tempfile
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from python_detector import scan_python_file
+from scanner.detectors.python_detector import scan_python_file
 
 
 def _scan_source(source: str) -> list[dict]:
@@ -99,6 +99,21 @@ def test_key_size_never_guessed_when_not_explicit():
     findings = _scan_source("from Crypto.Cipher import AES\ncipher = AES.new(key, AES.MODE_EAX)\n")
     calls = [f for f in findings if f["detection_method"] == "ast_call"]
     assert calls[0]["key_size"] is None
+    assert calls[0]["mode"] == "EAX"
+
+
+def test_aes_mode_extracted():
+    findings = _scan_source("from Crypto.Cipher import AES\ncipher = AES.new(key, AES.MODE_GCM)\n")
+    calls = [f for f in findings if f["detection_method"] == "ast_call"]
+    assert calls[0]["algorithm"] == "AES"
+    assert calls[0]["mode"] == "GCM"
+
+
+def test_des_mode_ecb_extracted():
+    findings = _scan_source("from Crypto.Cipher import DES\ncipher = DES.new(key, DES.MODE_ECB)\n")
+    calls = [f for f in findings if f["detection_method"] == "ast_call"]
+    assert calls[0]["algorithm"] == "DES"
+    assert calls[0]["mode"] == "ECB"
 
 
 def test_unrelated_variable_named_rsa_is_not_detected():
