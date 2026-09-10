@@ -20,6 +20,7 @@ from datetime import datetime, timezone
 
 from classification import classify_all
 from dedup import merge_duplicates
+from fix_suggestions import get_fix_suggestion
 from pattern_recognition import analyze_patterns
 from recommendation_db import attach_recommendations
 
@@ -36,6 +37,16 @@ def generate_cbom(raw_artifacts: list[dict]) -> dict:
 
     # Step 4: attach PQC/hybrid recommendations
     components = attach_recommendations(merged)
+
+    # Step 4.5: attach fix-it suggestions (guided before/after examples)
+    for c in components:
+        occurrences = c.get("occurrences", [])
+        if occurrences:
+            file_path = occurrences[0]["file_path"]
+            language = _detect_language(file_path)
+            c["fix_suggestion"] = get_fix_suggestion(c["algorithm"], language)
+        else:
+            c["fix_suggestion"] = None
 
     # Step 5: assemble final CBOM document
     quantum_vulnerable_count = sum(
@@ -68,6 +79,19 @@ def _category_breakdown(components: list[dict]) -> dict:
         cat = c["cbom_category"]
         breakdown[cat] = breakdown.get(cat, 0) + 1
     return breakdown
+
+def _detect_language(file_path: str) -> str:
+    """Maps a file extension to the language key used in FIX_TEMPLATES."""
+    ext_map = {
+        ".py": "python",
+        ".java": "java",
+        ".js": "javascript",
+        ".c": "c",
+    }
+    for ext, lang in ext_map.items():
+        if file_path.endswith(ext):
+            return lang
+    return "unknown"  
 
 
 if __name__ == "__main__":
