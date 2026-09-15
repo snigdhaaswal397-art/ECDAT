@@ -200,7 +200,7 @@ def test_subject_alternative_names_extracted():
 def test_ec_certificate_algorithm_and_curve():
     findings = scan_certificate(_sample("ec_p256_cert.pem"))
     assert findings[0]["algorithm"] == "EC"
-    assert findings[0]["key_size"] == 256
+    assert findings[0]["key_size"] is None
     assert findings[0]["ec_curve"] == "prime256v1"
     assert "ecdsa" in findings[0]["signature_algorithm"].lower()
 

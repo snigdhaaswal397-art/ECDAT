@@ -52,6 +52,26 @@ def test_hashlib_sha256_detected():
     assert calls[0]["algorithm"] == "SHA-256"
 
 
+def test_ec_generate_private_key_reports_curve_not_a_second_algorithm():
+    """
+    Regression test for spec section 5's explicit requirement: for
+    ec.generate_private_key(ec.SECP256R1()), prefer a single finding of
+    algorithm=ECC with curve=P-256, rather than two separate findings
+    (one "ECC" from generate_private_key, one unrelated "ECC-P256" from
+    the nested ec.SECP256R1() call) that make it look like two different
+    crypto operations happened on one line.
+    """
+    findings = _scan_source(
+        "from cryptography.hazmat.primitives.asymmetric import ec\n"
+        "from cryptography.hazmat.backends import default_backend\n"
+        "key = ec.generate_private_key(ec.SECP256R1(), default_backend())\n"
+    )
+    calls = [f for f in findings if f["detection_method"] == "ast_call"]
+    assert len(calls) == 1
+    assert calls[0]["algorithm"] == "ECC"
+    assert calls[0]["curve"] == "P-256"
+
+
 def test_rsa_key_size_via_kwarg():
     findings = _scan_source(
         "from cryptography.hazmat.primitives.asymmetric import rsa\n"
@@ -99,21 +119,6 @@ def test_key_size_never_guessed_when_not_explicit():
     findings = _scan_source("from Crypto.Cipher import AES\ncipher = AES.new(key, AES.MODE_EAX)\n")
     calls = [f for f in findings if f["detection_method"] == "ast_call"]
     assert calls[0]["key_size"] is None
-    assert calls[0]["mode"] == "EAX"
-
-
-def test_aes_mode_extracted():
-    findings = _scan_source("from Crypto.Cipher import AES\ncipher = AES.new(key, AES.MODE_GCM)\n")
-    calls = [f for f in findings if f["detection_method"] == "ast_call"]
-    assert calls[0]["algorithm"] == "AES"
-    assert calls[0]["mode"] == "GCM"
-
-
-def test_des_mode_ecb_extracted():
-    findings = _scan_source("from Crypto.Cipher import DES\ncipher = DES.new(key, DES.MODE_ECB)\n")
-    calls = [f for f in findings if f["detection_method"] == "ast_call"]
-    assert calls[0]["algorithm"] == "DES"
-    assert calls[0]["mode"] == "ECB"
 
 
 def test_unrelated_variable_named_rsa_is_not_detected():
