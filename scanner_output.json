@@ -2,11 +2,11 @@
   {
     "artifact_type": "certificate",
     "algorithm": "EC",
-    "key_size": 256,
+    "key_size": null,
     "file_path": "samples\\certificates\\ec_p256_cert.pem",
     "detection_method": "openssl",
     "confidence": 1.0,
-    "artifact_id": "a0cab5a5",
+    "artifact_id": "48b03f15",
     "certificate_subject": "CN=ECDAT EC P256 Test Certificate",
     "certificate_issuer": "CN=ECDAT EC P256 Test Certificate",
     "certificate_expiry": "Sep  8 18:28:19 2027 GMT",
@@ -24,7 +24,7 @@
     "file_path": "samples\\certificates\\ed25519_cert.pem",
     "detection_method": "openssl",
     "confidence": 1.0,
-    "artifact_id": "4d3aaa66",
+    "artifact_id": "15904177",
     "certificate_subject": "CN=ECDAT Test Certificate, O=ECDAT Test Org",
     "certificate_issuer": "CN=ECDAT Test Certificate, O=ECDAT Test Org",
     "certificate_expiry": "Sep  8 13:44:35 2027 GMT",
@@ -41,9 +41,9 @@
     "file_path": "samples\\certificates\\malformed_but_labeled.pem",
     "detection_method": "openssl",
     "confidence": 0.0,
-    "artifact_id": "9c56fbc3",
+    "artifact_id": "92aaa724",
     "warning_type": "malformed_certificate",
-    "message": "OpenSSL could not parse 'samples\\certificates\\malformed_but_labeled.pem' as a PEM or DER X.509 certificate: Could not find certificate from samples\\certificates\\malformed_but_labeled.pem\r\n94290000:error:1608010C:STORE routines:ossl_store_handle_load_result:unsupported:../openssl-3.5.4/crypto/store/store_result.c:162:provider=default"
+    "message": "OpenSSL could not parse 'samples\\certificates\\malformed_but_labeled.pem' as a PEM or DER X.509 certificate: Could not find certificate from samples\\certificates\\malformed_but_labeled.pem\r\nE8410000:error:1608010C:STORE routines:ossl_store_handle_load_result:unsupported:../openssl-3.5.4/crypto/store/store_result.c:162:provider=default"
   },
   {
     "artifact_type": "warning",
@@ -52,9 +52,9 @@
     "file_path": "samples\\certificates\\malformed_cert.crt",
     "detection_method": "openssl",
     "confidence": 0.0,
-    "artifact_id": "374fb235",
+    "artifact_id": "d57f0871",
     "warning_type": "malformed_certificate",
-    "message": "OpenSSL could not parse 'samples\\certificates\\malformed_cert.crt' as a PEM or DER X.509 certificate: Could not find certificate from samples\\certificates\\malformed_cert.crt\r\n50100000:error:1E08010C:DECODER routines:OSSL_DECODER_from_bio:unsupported:../openssl-3.5.4/crypto/encode_decode/decoder_lib.c:102:No supported data to decode.  Input type: PEM, Input structure: Certificate"
+    "message": "OpenSSL could not parse 'samples\\certificates\\malformed_cert.crt' as a PEM or DER X.509 certificate: Could not find certificate from samples\\certificates\\malformed_cert.crt\r\n68080000:error:1E08010C:DECODER routines:OSSL_DECODER_from_bio:unsupported:../openssl-3.5.4/crypto/encode_decode/decoder_lib.c:102:No supported data to decode.  Input type: PEM, Input structure: Certificate"
   },
   {
     "artifact_type": "certificate",
@@ -63,7 +63,7 @@
     "file_path": "samples\\certificates\\no_password.p12",
     "detection_method": "openssl",
     "confidence": 1.0,
-    "artifact_id": "ceb77496",
+    "artifact_id": "87d71251",
     "certificate_subject": "CN=ECDAT Test Certificate, O=ECDAT Test Org",
     "certificate_issuer": "CN=ECDAT Test Certificate, O=ECDAT Test Org",
     "certificate_expiry": "Sep  8 09:42:16 2027 GMT",
@@ -84,7 +84,7 @@
     "file_path": "samples\\certificates\\rsa2048_cert.der",
     "detection_method": "openssl",
     "confidence": 1.0,
-    "artifact_id": "216eaf3c",
+    "artifact_id": "884d9c07",
     "certificate_subject": "CN=ECDAT Test Certificate, O=ECDAT Test Org",
     "certificate_issuer": "CN=ECDAT Test Certificate, O=ECDAT Test Org",
     "certificate_expiry": "Sep  8 09:42:16 2027 GMT",
@@ -105,7 +105,7 @@
     "file_path": "samples\\certificates\\rsa2048_cert.pem",
     "detection_method": "openssl",
     "confidence": 1.0,
-    "artifact_id": "a2d7efa8",
+    "artifact_id": "c540e01e",
     "certificate_subject": "CN=ECDAT Test Certificate, O=ECDAT Test Org",
     "certificate_issuer": "CN=ECDAT Test Certificate, O=ECDAT Test Org",
     "certificate_expiry": "Sep  8 09:42:16 2027 GMT",
@@ -126,7 +126,7 @@
     "file_path": "samples\\certificates\\rsa4096_cert.pem",
     "detection_method": "openssl",
     "confidence": 1.0,
-    "artifact_id": "2fb8f440",
+    "artifact_id": "29bcc544",
     "certificate_subject": "CN=ECDAT Test Certificate, O=ECDAT Test Org",
     "certificate_issuer": "CN=ECDAT Test Certificate, O=ECDAT Test Org",
     "certificate_expiry": "Sep  8 14:09:49 2027 GMT",
@@ -143,7 +143,7 @@
     "file_path": "samples\\certificates\\with_password.pfx",
     "detection_method": "openssl",
     "confidence": 0.5,
-    "artifact_id": "66761beb",
+    "artifact_id": "32184706",
     "certificate_source_format": "PKCS12",
     "certificate_password_protected": true,
     "certificate_note": "PKCS#12 container requires a password; metadata was not extracted."
@@ -162,7 +162,7 @@
     "evidence_type": "package_install",
     "detection_method": "pattern",
     "confidence": 0.9,
-    "artifact_id": "923769f9"
+    "artifact_id": "c6998cd8"
   },
   {
     "artifact_type": "algorithm",
@@ -178,7 +178,7 @@
     "evidence_type": "openssl_command",
     "detection_method": "regex/pattern",
     "confidence": 0.95,
-    "artifact_id": "0ae32b65"
+    "artifact_id": "d76c6412"
   },
   {
     "artifact_type": "certificate_generation",
@@ -194,7 +194,7 @@
     "evidence_type": "openssl_command",
     "detection_method": "regex/pattern",
     "confidence": 0.95,
-    "artifact_id": "4f7d83a4"
+    "artifact_id": "f59172a6"
   },
   {
     "artifact_type": "certificate_reference",
@@ -210,7 +210,7 @@
     "evidence_type": "certificate_file_reference",
     "detection_method": "pattern",
     "confidence": 0.8,
-    "artifact_id": "e83a30d3"
+    "artifact_id": "649882ef"
   },
   {
     "artifact_type": "key_reference",
@@ -226,7 +226,7 @@
     "evidence_type": "key_file_reference",
     "detection_method": "pattern",
     "confidence": 0.8,
-    "artifact_id": "d8a1fe0e"
+    "artifact_id": "f9b61e04"
   },
   {
     "artifact_type": "certificate_reference",
@@ -242,7 +242,7 @@
     "evidence_type": "certificate_file_reference",
     "detection_method": "pattern",
     "confidence": 0.8,
-    "artifact_id": "3283b357"
+    "artifact_id": "18f7c4ed"
   },
   {
     "artifact_type": "certificate_reference",
@@ -258,7 +258,7 @@
     "evidence_type": "certificate_file_reference",
     "detection_method": "pattern",
     "confidence": 0.8,
-    "artifact_id": "81a650ba"
+    "artifact_id": "bcc5618d"
   },
   {
     "artifact_type": "key_reference",
@@ -274,7 +274,7 @@
     "evidence_type": "key_file_reference",
     "detection_method": "pattern",
     "confidence": 0.8,
-    "artifact_id": "382d71f5"
+    "artifact_id": "d2cb9b11"
   },
   {
     "artifact_type": "certificate_reference",
@@ -290,7 +290,7 @@
     "evidence_type": "env_config",
     "detection_method": "pattern",
     "confidence": 0.85,
-    "artifact_id": "e7645c4a"
+    "artifact_id": "98b43a7a"
   },
   {
     "artifact_type": "library",
@@ -306,7 +306,7 @@
     "evidence_type": "package_install",
     "detection_method": "pattern",
     "confidence": 0.9,
-    "artifact_id": "a7dab317"
+    "artifact_id": "87319841"
   },
   {
     "artifact_type": "library",
@@ -322,7 +322,7 @@
     "evidence_type": "package_install",
     "detection_method": "pattern",
     "confidence": 0.9,
-    "artifact_id": "03bc7d5b"
+    "artifact_id": "76205faa"
   },
   {
     "artifact_type": "algorithm",
@@ -338,7 +338,7 @@
     "evidence_type": "openssl_command",
     "detection_method": "regex/pattern",
     "confidence": 0.95,
-    "artifact_id": "3c551c4b"
+    "artifact_id": "ff67d15a"
   },
   {
     "artifact_type": "key_reference",
@@ -354,7 +354,7 @@
     "evidence_type": "key_file_reference",
     "detection_method": "pattern",
     "confidence": 0.8,
-    "artifact_id": "9e6df5c1"
+    "artifact_id": "4a5c85c1"
   },
   {
     "artifact_type": "certificate_generation",
@@ -370,7 +370,7 @@
     "evidence_type": "openssl_command",
     "detection_method": "regex/pattern",
     "confidence": 0.95,
-    "artifact_id": "6ec9934b"
+    "artifact_id": "4e3d7c5f"
   },
   {
     "artifact_type": "certificate_reference",
@@ -386,7 +386,7 @@
     "evidence_type": "certificate_file_reference",
     "detection_method": "pattern",
     "confidence": 0.8,
-    "artifact_id": "1cb59f33"
+    "artifact_id": "dc359d2c"
   },
   {
     "artifact_type": "key_reference",
@@ -402,7 +402,7 @@
     "evidence_type": "key_file_reference",
     "detection_method": "pattern",
     "confidence": 0.8,
-    "artifact_id": "ff6dba0d"
+    "artifact_id": "1fc2f209"
   },
   {
     "artifact_type": "protocol",
@@ -418,7 +418,7 @@
     "evidence_type": "env_config",
     "detection_method": "pattern",
     "confidence": 0.9,
-    "artifact_id": "df6050de"
+    "artifact_id": "a6113112"
   },
   {
     "artifact_type": "library",
@@ -434,7 +434,7 @@
     "evidence_type": "package_install",
     "detection_method": "pattern",
     "confidence": 0.9,
-    "artifact_id": "7d798be1"
+    "artifact_id": "f6daf838"
   },
   {
     "artifact_type": "library",
@@ -450,7 +450,7 @@
     "evidence_type": "package_install",
     "detection_method": "pattern",
     "confidence": 0.9,
-    "artifact_id": "cbf82127"
+    "artifact_id": "f067919b"
   },
   {
     "artifact_type": "protocol",
@@ -466,7 +466,7 @@
     "evidence_type": "env_config",
     "detection_method": "pattern",
     "confidence": 0.9,
-    "artifact_id": "eda3933d"
+    "artifact_id": "63fdcf30"
   },
   {
     "artifact_type": "certificate_reference",
@@ -482,7 +482,7 @@
     "evidence_type": "env_config",
     "detection_method": "pattern",
     "confidence": 0.85,
-    "artifact_id": "35a9a4fb"
+    "artifact_id": "d3fd6de7"
   },
   {
     "artifact_type": "key_reference",
@@ -498,7 +498,7 @@
     "evidence_type": "env_config",
     "detection_method": "pattern",
     "confidence": 0.85,
-    "artifact_id": "90804515"
+    "artifact_id": "bd70ffc4"
   },
   {
     "artifact_type": "certificate_reference",
@@ -514,7 +514,7 @@
     "evidence_type": "certificate_file_reference",
     "detection_method": "pattern",
     "confidence": 0.8,
-    "artifact_id": "a00353c6"
+    "artifact_id": "0f781f1c"
   },
   {
     "artifact_type": "key_reference",
@@ -530,10 +530,10 @@
     "evidence_type": "key_file_reference",
     "detection_method": "pattern",
     "confidence": 0.8,
-    "artifact_id": "1b85c842"
+    "artifact_id": "798c8d4b"
   },
   {
-    "artifact_id": "639a0824",
+    "artifact_id": "35b0002e",
     "artifact_type": "hash",
     "algorithm": "MD5",
     "key_size": null,
@@ -545,7 +545,7 @@
     "confidence": 0.95
   },
   {
-    "artifact_id": "a78b5315",
+    "artifact_id": "234eebe1",
     "artifact_type": "hash",
     "algorithm": "SHA-1",
     "key_size": null,
@@ -557,7 +557,7 @@
     "confidence": 0.95
   },
   {
-    "artifact_id": "c02c9713",
+    "artifact_id": "e884b92e",
     "artifact_type": "algorithm",
     "algorithm": "RSA",
     "key_size": 1024,
@@ -569,7 +569,7 @@
     "confidence": 0.95
   },
   {
-    "artifact_id": "4274518a",
+    "artifact_id": "4beec124",
     "artifact_type": "algorithm",
     "algorithm": "AES",
     "key_size": null,
@@ -582,7 +582,7 @@
     "mode": "GCM"
   },
   {
-    "artifact_id": "0a099a13",
+    "artifact_id": "c019b77b",
     "artifact_type": "algorithm",
     "algorithm": "ECDSA",
     "key_size": null,
@@ -594,7 +594,7 @@
     "confidence": 0.95
   },
   {
-    "artifact_id": "bb101804",
+    "artifact_id": "a7e70e66",
     "artifact_type": "import_signal",
     "algorithm": "UNSPECIFIED",
     "key_size": null,
@@ -615,7 +615,7 @@
     "library": "Crypto.PublicKey",
     "line_number": 2,
     "code_snippet": "from Crypto.PublicKey import RSA",
-    "artifact_id": "07915f24"
+    "artifact_id": "4a42a878"
   },
   {
     "artifact_type": "import_signal",
@@ -627,7 +627,7 @@
     "library": "Crypto.Cipher",
     "line_number": 3,
     "code_snippet": "from Crypto.Cipher import AES, DES",
-    "artifact_id": "a322a903"
+    "artifact_id": "7042c9e8"
   },
   {
     "artifact_type": "import_signal",
@@ -639,7 +639,7 @@
     "library": "hashlib",
     "line_number": 4,
     "code_snippet": "import hashlib",
-    "artifact_id": "5cccdab4"
+    "artifact_id": "d7205f55"
   },
   {
     "artifact_type": "algorithm",
@@ -651,7 +651,7 @@
     "library": "Crypto.PublicKey",
     "line_number": 8,
     "code_snippet": "key = RSA.generate(1024)",
-    "artifact_id": "dc9c4de1"
+    "artifact_id": "a61e76b0"
   },
   {
     "artifact_type": "hash",
@@ -663,7 +663,7 @@
     "library": "hashlib",
     "line_number": 13,
     "code_snippet": "return hashlib.md5(password.encode()).hexdigest()",
-    "artifact_id": "afdf1edb"
+    "artifact_id": "9d9eff9a"
   },
   {
     "artifact_type": "hash",
@@ -675,7 +675,7 @@
     "library": "hashlib",
     "line_number": 16,
     "code_snippet": "return hashlib.sha1(data).hexdigest()",
-    "artifact_id": "0dcb5d6e"
+    "artifact_id": "e9c6cd74"
   },
   {
     "artifact_type": "algorithm",
@@ -687,7 +687,7 @@
     "library": "Crypto.Cipher",
     "line_number": 19,
     "code_snippet": "cipher = AES.new(key, AES.MODE_EAX)",
-    "artifact_id": "b2836632",
+    "artifact_id": "fef31ab5",
     "mode": "EAX"
   },
   {
@@ -700,11 +700,11 @@
     "library": "Crypto.Cipher",
     "line_number": 23,
     "code_snippet": "cipher = DES.new(key, DES.MODE_ECB)",
-    "artifact_id": "15fb316e",
+    "artifact_id": "7b062393",
     "mode": "ECB"
   },
   {
-    "artifact_id": "50bcdda6",
+    "artifact_id": "2db67c97",
     "artifact_type": "import_signal",
     "algorithm": "UNSPECIFIED",
     "key_size": null,
@@ -716,7 +716,7 @@
     "confidence": 0.25
   },
   {
-    "artifact_id": "9417ef2a",
+    "artifact_id": "43eb23e7",
     "artifact_type": "import_signal",
     "algorithm": "UNSPECIFIED",
     "key_size": null,
@@ -728,7 +728,7 @@
     "confidence": 0.25
   },
   {
-    "artifact_id": "f894aa87",
+    "artifact_id": "2f3dfafa",
     "artifact_type": "import_signal",
     "algorithm": "UNSPECIFIED",
     "key_size": null,
@@ -740,7 +740,7 @@
     "confidence": 0.25
   },
   {
-    "artifact_id": "4d9d166f",
+    "artifact_id": "32dbe7a6",
     "artifact_type": "import_signal",
     "algorithm": "UNSPECIFIED",
     "key_size": null,
@@ -752,7 +752,7 @@
     "confidence": 0.25
   },
   {
-    "artifact_id": "e3e4347a",
+    "artifact_id": "07c1c0b2",
     "artifact_type": "algorithm",
     "algorithm": "RSA",
     "key_size": 1024,
@@ -764,7 +764,7 @@
     "confidence": 0.7
   },
   {
-    "artifact_id": "7bb5fa23",
+    "artifact_id": "310766e8",
     "artifact_type": "hash",
     "algorithm": "MD5",
     "key_size": null,
@@ -776,7 +776,7 @@
     "confidence": 0.7
   },
   {
-    "artifact_id": "119f3cb7",
+    "artifact_id": "80626d54",
     "artifact_type": "hash",
     "algorithm": "SHA-1",
     "key_size": null,
@@ -788,7 +788,7 @@
     "confidence": 0.7
   },
   {
-    "artifact_id": "bd7b5379",
+    "artifact_id": "c1031585",
     "artifact_type": "algorithm",
     "algorithm": "DES",
     "key_size": null,
@@ -809,7 +809,7 @@
     "library": "Node.js crypto",
     "line_number": 3,
     "code_snippet": "const hash = crypto.createHash(\"sha256\");",
-    "artifact_id": "4c9d0a76"
+    "artifact_id": "461d4548"
   },
   {
     "artifact_type": "hash",
@@ -821,7 +821,7 @@
     "library": "Node.js crypto",
     "line_number": 5,
     "code_snippet": "const oldHash = crypto.createHash(\"md5\");",
-    "artifact_id": "fe20fcb9"
+    "artifact_id": "66624667"
   },
   {
     "artifact_type": "algorithm",
@@ -833,7 +833,7 @@
     "library": "Node.js crypto",
     "line_number": 7,
     "code_snippet": "const cipher = crypto.createCipheriv(",
-    "artifact_id": "97071977",
+    "artifact_id": "a9fb08cf",
     "mode": "GCM"
   },
   {
@@ -846,7 +846,7 @@
     "library": "Node.js crypto",
     "line_number": 13,
     "code_snippet": "crypto.generateKeyPairSync(\"rsa\", {",
-    "artifact_id": "dca668e4"
+    "artifact_id": "ec7aa048"
   },
   {
     "artifact_type": "import_signal",
@@ -858,7 +858,7 @@
     "library": "Node.js crypto",
     "line_number": 1,
     "code_snippet": "const crypto = require(\"crypto\");",
-    "artifact_id": "387f8468"
+    "artifact_id": "45c26434"
   },
   {
     "artifact_type": "import_signal",
@@ -870,7 +870,7 @@
     "library": "cryptography",
     "line_number": 2,
     "code_snippet": "from cryptography.hazmat.primitives.asymmetric import ec, rsa",
-    "artifact_id": "725b25d9"
+    "artifact_id": "286c17ce"
   },
   {
     "artifact_type": "import_signal",
@@ -882,7 +882,7 @@
     "library": "Crypto.Cipher",
     "line_number": 4,
     "code_snippet": "from Crypto.Cipher import AES",
-    "artifact_id": "4aad4b02"
+    "artifact_id": "d7aa3b9e"
   },
   {
     "artifact_type": "algorithm",
@@ -894,7 +894,7 @@
     "library": "cryptography",
     "line_number": 7,
     "code_snippet": "return ec.generate_private_key(ec.SECP256R1())",
-    "artifact_id": "74fc6bd3",
+    "artifact_id": "4042b97c",
     "curve": "P-256"
   },
   {
@@ -907,7 +907,7 @@
     "library": "cryptography",
     "line_number": 10,
     "code_snippet": "return rsa.generate_private_key(public_exponent=65537, key_size=2048)",
-    "artifact_id": "89749160"
+    "artifact_id": "a7e0b8d2"
   },
   {
     "artifact_type": "hash",
@@ -919,7 +919,7 @@
     "library": "cryptography",
     "line_number": 13,
     "code_snippet": "digest = hashes.Hash(hashes.SHA256())",
-    "artifact_id": "2b3987d9"
+    "artifact_id": "7a47b181"
   },
   {
     "artifact_type": "algorithm",
@@ -931,7 +931,7 @@
     "library": "Crypto.Cipher",
     "line_number": 18,
     "code_snippet": "cipher = AES.new(key, AES.MODE_GCM)",
-    "artifact_id": "1feae807",
+    "artifact_id": "db811c6c",
     "mode": "GCM"
   }
 ]

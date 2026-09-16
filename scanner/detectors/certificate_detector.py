@@ -23,7 +23,7 @@ import re
 import shutil
 import subprocess
 import tempfile
-from dataclasses import dataclass, asdict
+from dataclasses import dataclass, asdict, fields
 from typing import Any, Dict, List, Optional
 
 
@@ -110,7 +110,7 @@ class CertificateFinding:
         return {
             key: value
             for key, value in data.items()
-            if value is not None
+            if value is not None or key == "key_size"
         }
 
 
@@ -363,20 +363,30 @@ def _parse_x509_text(text_output: str) -> Dict[str, Any]:
             match.group(1)
         )
 
-    # RSA key size
-    match = _RSA_KEYSIZE_RE.search(text_output)
+    # Key size
+    # RSA stores its numeric key size (e.g. 2048, 4096).
+    # EC certificates use the curve name instead (e.g. prime256v1),
+    # so the generic EC bit length is not stored in key_size.
 
-    if match:
-        fields["key_size"] = int(match.group(1))
+    if fields.get("algorithm") == "RSA":
+        match = _RSA_KEYSIZE_RE.search(text_output) or _GENERIC_KEYSIZE_RE.search(text_output)
+
+        if match:
+            fields["key_size"] = int(match.group(1))
+        else:
+            fields["key_size"] = None
+
+    elif fields.get("algorithm") == "EC":
+        fields["key_size"] = None
 
     else:
-        # Generic key size
+        # Generic key size for other algorithms
         match = _GENERIC_KEYSIZE_RE.search(text_output)
 
         if match:
             fields["key_size"] = int(match.group(1))
-
-    # EC curve
+        else:
+            fields["key_size"] = None
     match = _EC_CURVE_RE.search(text_output)
 
     if match:
