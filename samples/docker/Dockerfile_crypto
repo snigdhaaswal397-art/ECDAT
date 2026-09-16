@@ -1,0 +1,11 @@
+FROM python:3.12
+
+RUN apt-get update && apt-get install -y openssl
+
+RUN pip install cryptography
+
+RUN openssl genrsa -out server.key 2048
+
+RUN openssl req -new -x509 -key server.key -out server.crt -subj "/CN=ecdat-test"
+
+ENV TLS_VERSION=TLSv1.2
