@@ -7,7 +7,13 @@ Usage:
     python verify_java.py path/to/real/LegacyAuthService.java
 """
 import sys
-from java_detector import scan_java_file
+import os
+sys.path.insert(
+    0,
+    os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+)
+
+from scanner.detectors.java_detector import scan_java_file
 
 EXPECTED = [
     (9,  "MD5",   None,  "ast_call",  0.95),
