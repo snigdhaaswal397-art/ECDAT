@@ -216,3 +216,7 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+risk_output.json
+cbom/cbom_output.json
+cbom_output_test.json
+scanner_output_test.json
