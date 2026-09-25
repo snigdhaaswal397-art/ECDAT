@@ -37,15 +37,15 @@ def merge_duplicates(classified_artifacts: list[dict]) -> list[dict]:
         primary = max(group, key=lambda a: a["confidence"])
 
         occurrences = [
-            {
-                "file_path": a["file_path"],
-                "line_number": a.get("line_number"),
-                "code_snippet": a.get("code_snippet"),
-                "detection_method": a["detection_method"],
-                "confidence": a["confidence"],
-            }
-            for a in group
-        ]
+    {
+        "file_path": a.get("file_path"),
+        "line_number": a.get("line_number"),
+        "code_snippet": a.get("code_snippet"),
+        "detection_method": a["detection_method"],
+        "confidence": a.get("confidence", 0.5),
+    }
+    for a in group
+]
 
         merged_entry = {
             "cbom_entry_id": primary["artifact_id"],
