@@ -99,6 +99,12 @@ try:
 except ImportError:
     scan_java_file = None
 
+from scanner.detectors.treesitter_detector import scan_with_treesitter
+from scanner.detectors.semgrep_detector import scan_with_semgrep
+from scanner.detectors.protocol_detector import scan_protocol_file
+from scanner.detectors.dependency_detector import scan_dependency_file
+from scanner.detectors.binary_detector import scan_binary_file
+
 
 # ---------------------------------------------------------------------------
 # Directories that should never be scanned.
@@ -411,7 +417,68 @@ def scan_directory(
                 continue
 
             # ---------------------------------------------------------------
-            # Python
+            # Dependency manifests
+            # ---------------------------------------------------------------
+
+            if fname.lower() in (
+                "requirements.txt",
+                "pyproject.toml",
+                "package.json",
+                "package-lock.json",
+                "pom.xml",
+                "build.gradle",
+                "build.gradle.kts",
+                "cmakelists.txt",
+                "conanfile.txt",
+                "vcpkg.json",
+            ):
+                dep_results = scan_dependency_file(full_path)
+                all_artifacts.extend(_to_dict(r) for r in dep_results)
+
+            # ---------------------------------------------------------------
+            # Compiled Binaries (ELF / PE)
+            # ---------------------------------------------------------------
+
+            if fname.lower().endswith((".exe", ".dll", ".so", ".elf")):
+                bin_results = scan_binary_file(full_path)
+                all_artifacts.extend(_to_dict(r) for r in bin_results)
+
+            # ---------------------------------------------------------------
+            # Source code files (Tree-sitter, Semgrep, Existing AST/Regex, Protocol)
+            # ---------------------------------------------------------------
+
+            is_source = fname.lower().endswith(
+                (
+                    ".py",
+                    ".java",
+                    ".js",
+                    ".jsx",
+                    ".ts",
+                    ".tsx",
+                    ".c",
+                    ".h",
+                    ".cpp",
+                    ".cc",
+                    ".cxx",
+                    ".hpp",
+                )
+            )
+
+            if is_source:
+                # 1. Tree-sitter structural detection
+                ts_results = scan_with_treesitter(full_path)
+                all_artifacts.extend(_to_dict(r) for r in ts_results)
+
+                # 2. Semgrep pattern matching
+                sg_results = scan_with_semgrep(full_path)
+                all_artifacts.extend(_to_dict(r) for r in sg_results)
+
+                # 3. Protocol discovery
+                proto_results = scan_protocol_file(full_path)
+                all_artifacts.extend(_to_dict(r) for r in proto_results)
+
+            # ---------------------------------------------------------------
+            # Python (Existing fallback detector)
             # ---------------------------------------------------------------
 
             if fname.lower().endswith(".py"):
@@ -426,7 +493,7 @@ def scan_directory(
                 )
 
             # ---------------------------------------------------------------
-            # Java
+            # Java (Existing fallback detector)
             # ---------------------------------------------------------------
 
             elif fname.lower().endswith(".java"):
@@ -447,7 +514,7 @@ def scan_directory(
                     skipped_java += 1
 
             # ---------------------------------------------------------------
-            # JavaScript / TypeScript
+            # JavaScript / TypeScript (Existing fallback detector)
             # ---------------------------------------------------------------
 
             elif fname.lower().endswith(
@@ -469,7 +536,7 @@ def scan_directory(
                 )
 
             # ---------------------------------------------------------------
-            # C / C++ headers and source
+            # C / C++ headers and source (Existing fallback detector)
             # ---------------------------------------------------------------
 
             elif fname.lower().endswith(
