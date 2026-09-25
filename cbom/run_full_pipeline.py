@@ -25,3 +25,10 @@ for f in enriched:
 print("\n--- unique locations ---")
 for loc in sorted(set(f['location'] for f in risk_input)):
     print(loc)
+    
+from cyclonedx_export import cbom_to_cyclonedx
+
+bom = cbom_to_cyclonedx(cbom_output)
+with open("cbom_cyclonedx.json", "w") as f:
+    json.dump(bom, f, indent=2)
+print("CycloneDX export written -> cbom_cyclonedx.json")

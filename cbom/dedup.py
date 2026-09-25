@@ -39,8 +39,8 @@ def merge_duplicates(classified_artifacts: list[dict]) -> list[dict]:
         occurrences = [
             {
                 "file_path": a["file_path"],
-                "line_number": a["line_number"],
-                "code_snippet": a["code_snippet"],
+                "line_number": a.get("line_number"),
+                "code_snippet": a.get("code_snippet"),
                 "detection_method": a["detection_method"],
                 "confidence": a["confidence"],
             }
@@ -52,7 +52,7 @@ def merge_duplicates(classified_artifacts: list[dict]) -> list[dict]:
             "algorithm": primary["algorithm"],
             "key_size": primary.get("key_size"),
             "cbom_category": primary["cbom_category"],
-            "library": primary["library"],
+            "library": primary.get("library"),
             "occurrence_count": len(occurrences),
             "occurrences": occurrences,
             "max_confidence": max(a["confidence"] for a in group),
