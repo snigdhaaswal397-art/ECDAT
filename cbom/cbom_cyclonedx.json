@@ -1,0 +1,660 @@
+{
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.6",
+  "serialNumber": "urn:uuid:0d354d13-0788-4237-a8cf-aa10af925ac4",
+  "version": 1,
+  "metadata": {
+    "timestamp": "2026-09-25T20:05:09.283998+00:00",
+    "tools": {
+      "components": [
+        {
+          "type": "application",
+          "name": "ECDAT",
+          "version": "1.0"
+        }
+      ]
+    }
+  },
+  "components": [
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "f59172a6",
+      "name": null,
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "primitive": "unknown",
+          "parameterSetIdentifier": ""
+        }
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "samples\\certificates\\malformed_but_labeled.pem"
+          },
+          {
+            "location": "samples\\certificates\\malformed_cert.crt"
+          },
+          {
+            "location": "samples\\certificates\\with_password.pfx"
+          },
+          {
+            "location": "samples\\docker\\Dockerfile_certificate"
+          },
+          {
+            "location": "samples\\docker\\Dockerfile_certificate"
+          },
+          {
+            "location": "samples\\docker\\Dockerfile_certificate"
+          },
+          {
+            "location": "samples\\docker\\Dockerfile_certificate"
+          },
+          {
+            "location": "samples\\docker\\Dockerfile_certificate"
+          },
+          {
+            "location": "samples\\docker\\Dockerfile_certificate"
+          },
+          {
+            "location": "samples\\docker\\Dockerfile_certificate"
+          },
+          {
+            "location": "samples\\docker\\Dockerfile_certificate"
+          },
+          {
+            "location": "samples\\docker\\Dockerfile_crypto"
+          },
+          {
+            "location": "samples\\docker\\Dockerfile_crypto"
+          },
+          {
+            "location": "samples\\docker\\Dockerfile_crypto"
+          },
+          {
+            "location": "samples\\docker\\Dockerfile_crypto"
+          },
+          {
+            "location": "samples\\docker\\Dockerfile_crypto"
+          },
+          {
+            "location": "samples\\docker\\Dockerfile_crypto"
+          },
+          {
+            "location": "samples\\docker\\Dockerfile_crypto"
+          },
+          {
+            "location": "samples\\docker\\Dockerfile_library_only"
+          },
+          {
+            "location": "samples\\docker\\Dockerfile_library_only"
+          },
+          {
+            "location": "samples\\docker\\Dockerfile_tls"
+          },
+          {
+            "location": "samples\\docker\\Dockerfile_tls"
+          },
+          {
+            "location": "samples\\docker\\Dockerfile_tls"
+          },
+          {
+            "location": "samples\\docker\\Dockerfile_tls"
+          },
+          {
+            "location": "samples\\docker\\Dockerfile_tls"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "ecdat:recommendedAlternative",
+          "value": "Unknown \u2014 not in recommendation database"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "87d71251",
+      "name": "RSA",
+      "cryptoProperties": {
+        "assetType": "certificate",
+        "certificateProperties": {
+          "signatureAlgorithmRef": "RSA"
+        }
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "samples\\certificates\\no_password.p12"
+          },
+          {
+            "location": "samples\\certificates\\rsa2048_cert.der"
+          },
+          {
+            "location": "samples\\certificates\\rsa2048_cert.pem"
+          },
+          {
+            "location": "samples\\docker\\Dockerfile_crypto"
+          },
+          {
+            "location": "samples\\modern\\crypto_test.js"
+          },
+          {
+            "location": "samples\\modern\\modern_gateway.py"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "ecdat:recommendedAlternative",
+          "value": "ML-KEM (Kyber) for key exchange, ML-DSA (Dilithium) for signatures"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "35b0002e",
+      "name": "MD5",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "primitive": "hash",
+          "parameterSetIdentifier": ""
+        }
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "samples\\legacy\\LegacyAuthService.java"
+          },
+          {
+            "location": "samples\\legacy\\legacy_auth.py"
+          },
+          {
+            "location": "samples\\legacy\\legacy_crypto.c"
+          },
+          {
+            "location": "samples\\modern\\crypto_test.js"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "ecdat:recommendedAlternative",
+          "value": "SHA-256 or SHA-3"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "4beec124",
+      "name": "AES",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "primitive": "unknown",
+          "parameterSetIdentifier": ""
+        }
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "samples\\legacy\\LegacyAuthService.java"
+          },
+          {
+            "location": "samples\\legacy\\legacy_auth.py"
+          },
+          {
+            "location": "samples\\modern\\crypto_test.js"
+          },
+          {
+            "location": "samples\\modern\\modern_gateway.py"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "ecdat:recommendedAlternative",
+          "value": "AES-256 (if not already)"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "234eebe1",
+      "name": "SHA-1",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "primitive": "hash",
+          "parameterSetIdentifier": ""
+        }
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "samples\\legacy\\LegacyAuthService.java"
+          },
+          {
+            "location": "samples\\legacy\\legacy_auth.py"
+          },
+          {
+            "location": "samples\\legacy\\legacy_crypto.c"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "ecdat:recommendedAlternative",
+          "value": "SHA-256 or SHA-3"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "e884b92e",
+      "name": "RSA",
+      "cryptoProperties": {
+        "assetType": "related-crypto-material",
+        "relatedCryptoMaterialProperties": {
+          "type": "private-key",
+          "size": 1024
+        }
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "samples\\legacy\\LegacyAuthService.java"
+          },
+          {
+            "location": "samples\\legacy\\legacy_auth.py"
+          },
+          {
+            "location": "samples\\legacy\\legacy_crypto.c"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "ecdat:recommendedAlternative",
+          "value": "ML-KEM (Kyber) for key exchange, ML-DSA (Dilithium) for signatures"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "29bcc544",
+      "name": "RSA",
+      "cryptoProperties": {
+        "assetType": "certificate",
+        "certificateProperties": {
+          "signatureAlgorithmRef": "RSA"
+        }
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "samples\\certificates\\rsa4096_cert.pem"
+          },
+          {
+            "location": "samples\\docker\\Dockerfile_certificate"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "ecdat:recommendedAlternative",
+          "value": "ML-KEM (Kyber) for key exchange, ML-DSA (Dilithium) for signatures"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "7042c9e8",
+      "name": "Crypto.Cipher",
+      "cryptoProperties": {
+        "assetType": "related-crypto-material",
+        "relatedCryptoMaterialProperties": {
+          "type": "unknown",
+          "size": null
+        }
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "samples\\legacy\\legacy_auth.py"
+          },
+          {
+            "location": "samples\\modern\\modern_gateway.py"
+          }
+        ]
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "7b062393",
+      "name": "DES",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "primitive": "unknown",
+          "parameterSetIdentifier": ""
+        }
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "samples\\legacy\\legacy_auth.py"
+          },
+          {
+            "location": "samples\\legacy\\legacy_crypto.c"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "ecdat:recommendedAlternative",
+          "value": "AES-256"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "7a47b181",
+      "name": "SHA-256",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "primitive": "hash",
+          "parameterSetIdentifier": ""
+        }
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "samples\\modern\\crypto_test.js"
+          },
+          {
+            "location": "samples\\modern\\modern_gateway.py"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "ecdat:recommendedAlternative",
+          "value": "No change needed (SHA-384+ optional for extra long-term margin)"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "48b03f15",
+      "name": "EC",
+      "cryptoProperties": {
+        "assetType": "certificate",
+        "certificateProperties": {
+          "signatureAlgorithmRef": "EC"
+        }
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "samples\\certificates\\ec_p256_cert.pem"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "ecdat:recommendedAlternative",
+          "value": "Unknown \u2014 not in recommendation database"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "15904177",
+      "name": "Ed25519",
+      "cryptoProperties": {
+        "assetType": "certificate",
+        "certificateProperties": {
+          "signatureAlgorithmRef": "Ed25519"
+        }
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "samples\\certificates\\ed25519_cert.pem"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "ecdat:recommendedAlternative",
+          "value": "Unknown \u2014 not in recommendation database"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "c019b77b",
+      "name": "ECDSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "primitive": "unknown",
+          "parameterSetIdentifier": ""
+        }
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "samples\\legacy\\LegacyAuthService.java"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "ecdat:recommendedAlternative",
+          "value": "ML-DSA (Dilithium) or FN-DSA (Falcon)"
+        }
+      ]
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "a7e70e66",
+      "name": "javax.crypto.Cipher",
+      "cryptoProperties": {
+        "assetType": "related-crypto-material",
+        "relatedCryptoMaterialProperties": {
+          "type": "unknown",
+          "size": null
+        }
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "samples\\legacy\\LegacyAuthService.java"
+          }
+        ]
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "4a42a878",
+      "name": "Crypto.PublicKey",
+      "cryptoProperties": {
+        "assetType": "related-crypto-material",
+        "relatedCryptoMaterialProperties": {
+          "type": "unknown",
+          "size": null
+        }
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "samples\\legacy\\legacy_auth.py"
+          }
+        ]
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "d7205f55",
+      "name": "hashlib",
+      "cryptoProperties": {
+        "assetType": "related-crypto-material",
+        "relatedCryptoMaterialProperties": {
+          "type": "unknown",
+          "size": null
+        }
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "samples\\legacy\\legacy_auth.py"
+          }
+        ]
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "2db67c97",
+      "name": "openssl/rsa.h",
+      "cryptoProperties": {
+        "assetType": "related-crypto-material",
+        "relatedCryptoMaterialProperties": {
+          "type": "unknown",
+          "size": null
+        }
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "samples\\legacy\\legacy_crypto.c"
+          }
+        ]
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "43eb23e7",
+      "name": "openssl/des.h",
+      "cryptoProperties": {
+        "assetType": "related-crypto-material",
+        "relatedCryptoMaterialProperties": {
+          "type": "unknown",
+          "size": null
+        }
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "samples\\legacy\\legacy_crypto.c"
+          }
+        ]
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "2f3dfafa",
+      "name": "openssl/md5.h",
+      "cryptoProperties": {
+        "assetType": "related-crypto-material",
+        "relatedCryptoMaterialProperties": {
+          "type": "unknown",
+          "size": null
+        }
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "samples\\legacy\\legacy_crypto.c"
+          }
+        ]
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "32dbe7a6",
+      "name": "openssl/evp.h",
+      "cryptoProperties": {
+        "assetType": "related-crypto-material",
+        "relatedCryptoMaterialProperties": {
+          "type": "unknown",
+          "size": null
+        }
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "samples\\legacy\\legacy_crypto.c"
+          }
+        ]
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "45c26434",
+      "name": "Node.js crypto",
+      "cryptoProperties": {
+        "assetType": "related-crypto-material",
+        "relatedCryptoMaterialProperties": {
+          "type": "unknown",
+          "size": null
+        }
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "samples\\modern\\crypto_test.js"
+          }
+        ]
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "286c17ce",
+      "name": "cryptography",
+      "cryptoProperties": {
+        "assetType": "related-crypto-material",
+        "relatedCryptoMaterialProperties": {
+          "type": "unknown",
+          "size": null
+        }
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "samples\\modern\\modern_gateway.py"
+          }
+        ]
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "4042b97c",
+      "name": "ECC",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "primitive": "unknown",
+          "parameterSetIdentifier": ""
+        }
+      },
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "samples\\modern\\modern_gateway.py"
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "ecdat:recommendedAlternative",
+          "value": "ML-DSA (Dilithium) or FN-DSA (Falcon)"
+        }
+      ]
+    }
+  ]
+}
