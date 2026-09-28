@@ -104,6 +104,8 @@ from scanner.detectors.semgrep_detector import scan_with_semgrep
 from scanner.detectors.protocol_detector import scan_protocol_file
 from scanner.detectors.dependency_detector import scan_dependency_file
 from scanner.detectors.binary_detector import scan_binary_file
+from scanner.detectors.hardware_detector import scan_hardware_file
+from scanner.mtech_calculator import calculate_mtech
 
 
 # ---------------------------------------------------------------------------
@@ -477,6 +479,14 @@ def scan_directory(
                 proto_results = scan_protocol_file(full_path)
                 all_artifacts.extend(_to_dict(r) for r in proto_results)
 
+                # 4. Hardware & Infrastructure discovery
+                hw_results = scan_hardware_file(full_path)
+                all_artifacts.extend(_to_dict(r) for r in hw_results)
+
+            elif fname.lower().endswith((".fw", ".hex", ".bin", ".cnf", ".conf", ".sql")):
+                hw_results = scan_hardware_file(full_path)
+                all_artifacts.extend(_to_dict(r) for r in hw_results)
+
             # ---------------------------------------------------------------
             # Python (Existing fallback detector)
             # ---------------------------------------------------------------
@@ -703,6 +713,15 @@ def main() -> None:
         ),
     )
 
+    parser.add_argument(
+        "--mtech-output",
+        default=None,
+        help=(
+            "Output JSON file for M_tech technical migration effort "
+            "(default: mtech_result.json)"
+        ),
+    )
+
     args = parser.parse_args()
 
     # -----------------------------------------------------------------------
@@ -833,6 +852,30 @@ def main() -> None:
         )
 
         sys.exit(1)
+
+    # -----------------------------------------------------------------------
+    # M_tech Technical Migration Effort Calculation
+    # -----------------------------------------------------------------------
+
+    mtech_result = calculate_mtech(json_results, args.directory)
+
+    if args.mtech_output:
+        mtech_output_path = args.mtech_output
+    else:
+        out_dir = os.path.dirname(args.output)
+        mtech_output_path = (
+            os.path.join(out_dir, "mtech_result.json")
+            if out_dir
+            else "mtech_result.json"
+        )
+
+    try:
+        with open(mtech_output_path, "w", encoding="utf-8") as mtech_file:
+            json.dump(mtech_result, mtech_file, indent=2, ensure_ascii=False)
+        print(f"  M_tech technical migration effort score: {mtech_result.get('M_tech')} ({mtech_result.get('architecture_classification')})")
+        print(f"  M_tech output written to {mtech_output_path}")
+    except OSError as exc:
+        print(f"  [warning] could not write M_tech result file '{mtech_output_path}': {exc}")
 
     # -----------------------------------------------------------------------
     # Summary
