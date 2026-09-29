@@ -22,6 +22,42 @@ FIX_TEMPLATES = {
         "java": "Use SHA-256 instead of MD5. Example:\n"
                 "MessageDigest md = MessageDigest.getInstance(\"SHA-256\");\n"
                 "byte[] hash = md.digest(data.getBytes());"
+    },
+    "SHA-1": {
+        "python": "Use SHA-256 instead of SHA-1. Example:\n"
+                  "import hashlib\n"
+                  "hashlib.sha256(data.encode()).hexdigest()",
+        "java": "Use SHA-256 instead of SHA-1. Example:\n"
+                "MessageDigest md = MessageDigest.getInstance(\"SHA-256\");\n"
+                "byte[] hash = md.digest(data.getBytes());"
+    },
+    "DES": {
+        "python": "Use AES-256 instead of DES. Example:\n"
+                  "from Crypto.Cipher import AES\n"
+                  "from Crypto.Random import get_random_bytes\n"
+                  "key = get_random_bytes(32)  # 256-bit key\n"
+                  "cipher = AES.new(key, AES.MODE_GCM)\n"
+                  "ciphertext, tag = cipher.encrypt_and_digest(data)",
+        "java": "Use AES-256 instead of DES. Example:\n"
+                "KeyGenerator kg = KeyGenerator.getInstance(\"AES\");\n"
+                "kg.init(256);\n"
+                "SecretKey key = kg.generateKey();\n"
+                "Cipher cipher = Cipher.getInstance(\"AES/GCM/NoPadding\");\n"
+                "cipher.init(Cipher.ENCRYPT_MODE, key);"
+    },
+    "3DES": {
+        "python": "Use AES-256 instead of 3DES (Triple DES). Example:\n"
+                  "from Crypto.Cipher import AES\n"
+                  "from Crypto.Random import get_random_bytes\n"
+                  "key = get_random_bytes(32)  # 256-bit key\n"
+                  "cipher = AES.new(key, AES.MODE_GCM)\n"
+                  "ciphertext, tag = cipher.encrypt_and_digest(data)",
+        "java": "Use AES-256 instead of 3DES (Triple DES). Example:\n"
+                "KeyGenerator kg = KeyGenerator.getInstance(\"AES\");\n"
+                "kg.init(256);\n"
+                "SecretKey key = kg.generateKey();\n"
+                "Cipher cipher = Cipher.getInstance(\"AES/GCM/NoPadding\");\n"
+                "cipher.init(Cipher.ENCRYPT_MODE, key);"
     }
 }
 
