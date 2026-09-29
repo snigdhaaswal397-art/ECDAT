@@ -2,6 +2,8 @@
 ECDAT -- CBOM Generator output -> Risk Engine input adapter.
 """
 
+from recommendation_db import get_recommendation, get_category_level_recommendation
+
 CATEGORY_TO_FINDING_TYPE = {
     "Certificate": "certificate",
     "Protocol": "tls_config",
@@ -12,15 +14,11 @@ CATEGORY_TO_FINDING_TYPE = {
     # algorithm="UNSPECIFIED", nothing for the risk engine to score yet.
 }
 
-# Path substrings that suggest a finding is internet-facing / high-value.
-# Rule-based, on purpose -- a first pass until real exposure data exists.
 _INTERNET_HINTS = ("tls", "gateway", "public", "auth", "login", "api", "payment")
 _CRITICAL_HINTS = ("payment", "financial", "kms", "vault")
 
 
 def infer_context(cbom_category: str, algorithm: str, file_path: str) -> dict:
-    """Rule-based sensitivity/exposure/purpose tagging from category + path,
-    since the scanner doesn't emit this yet (ECDAT open item: Tier 2 tagging)."""
     path_lower = file_path.lower()
     context = {
         "sensitivity": "Moderate",
@@ -30,7 +28,7 @@ def infer_context(cbom_category: str, algorithm: str, file_path: str) -> dict:
 
     if any(h in path_lower for h in _CRITICAL_HINTS):
         context["sensitivity"] = "Critical"
-        context["data_lifetime_years"] = 12  # long-lived sensitive data: harvest-now-decrypt-later risk
+        context["data_lifetime_years"] = 12
     elif context["internet_facing"]:
         context["sensitivity"] = "High"
         context["data_lifetime_years"] = 6
@@ -48,8 +46,6 @@ def infer_context(cbom_category: str, algorithm: str, file_path: str) -> dict:
 
 
 def cbom_entry_to_findings(entry: dict) -> list[dict]:
-    """One CBOM entry -> one Risk Engine finding PER occurrence, so
-    location-based factors (internet_facing etc.) stay accurate per file."""
     finding_type = CATEGORY_TO_FINDING_TYPE.get(entry["cbom_category"])
     if finding_type is None:
         return []
@@ -79,3 +75,36 @@ def cbom_to_risk_input(cbom_output: dict) -> list[dict]:
         findings.extend(entry_findings)
     print(f"[adapter] {len(findings)} findings converted, {skipped} entries skipped (no scoreable algorithm)")
     return findings
+
+
+def determine_migration_phase(finding: dict) -> str:
+    """Determine where a finding sits in the migration roadmap,
+    based only on data available from a static scan. Validate/Migrate/
+    Retire require real-world deployment progress this pipeline has
+    no way to know, so they stay as roadmap placeholders, not computed
+    values."""
+    hybrid_ready_types = {"certificate", "tls_config"}
+    if finding.get("finding_type") in hybrid_ready_types:
+        return "Hybrid-ready"
+    return "Discover & Assess"
+
+
+def merge_recommendations(cbom_output: dict, enriched: list[dict]) -> list[dict]:
+    entry_by_id = {entry["cbom_entry_id"]: entry for entry in cbom_output["components"]}
+
+    final = []
+    for finding in enriched:
+        f2 = dict(finding)
+        f2["migration_phase"] = determine_migration_phase(finding)
+        cbom_entry_id = finding["finding_id"].rsplit("_", 1)[0]
+        cbom_category = entry_by_id.get(cbom_entry_id, {}).get("cbom_category")
+
+        if finding["algorithm"] != "UNSPECIFIED":
+            f2["db_recommendation"] = get_recommendation(finding["algorithm"])
+            f2["db_recommendation_source"] = "algorithm_map"
+        else:
+            rec = get_category_level_recommendation(cbom_category)
+            f2["db_recommendation"] = rec
+            f2["db_recommendation_source"] = "category_fallback" if rec else "none"
+        final.append(f2)
+    return final
