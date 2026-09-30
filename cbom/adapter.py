@@ -84,7 +84,10 @@ def determine_migration_phase(finding: dict) -> str:
     no way to know, so they stay as roadmap placeholders, not computed
     values."""
     hybrid_ready_types = {"certificate", "tls_config"}
+    hybrid_ready_algorithms = {"RSA", "ECC", "EC", "ECDSA", "Ed25519", "DSA", "DH"}
     if finding.get("finding_type") in hybrid_ready_types:
+        return "Hybrid-ready"
+    if finding.get("algorithm") in hybrid_ready_algorithms:
         return "Hybrid-ready"
     return "Discover & Assess"
 
