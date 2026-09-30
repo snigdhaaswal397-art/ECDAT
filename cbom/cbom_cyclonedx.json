@@ -1,10 +1,10 @@
 {
   "bomFormat": "CycloneDX",
   "specVersion": "1.6",
-  "serialNumber": "urn:uuid:0d354d13-0788-4237-a8cf-aa10af925ac4",
+  "serialNumber": "urn:uuid:2827c786-edde-4e63-ae1b-b5de82407101",
   "version": 1,
   "metadata": {
-    "timestamp": "2026-09-25T20:05:09.283998+00:00",
+    "timestamp": "2026-09-30T19:14:31.123073+00:00",
     "tools": {
       "components": [
         {
@@ -407,7 +407,7 @@
       "properties": [
         {
           "name": "ecdat:recommendedAlternative",
-          "value": "Unknown \u2014 not in recommendation database"
+          "value": "ML-DSA (Dilithium) or FN-DSA (Falcon)"
         }
       ]
     },
@@ -431,7 +431,7 @@
       "properties": [
         {
           "name": "ecdat:recommendedAlternative",
-          "value": "Unknown \u2014 not in recommendation database"
+          "value": "ML-DSA (Dilithium) or FN-DSA (Falcon)"
         }
       ]
     },
